@@ -1,0 +1,1213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🚀 GitHub Code Analyzer - Enhanced</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --color-bg: #0a0a0a;
+            --color-text: #00ff00;
+            --color-primary: #00ff41;
+            --color-secondary: #ff006e;
+            --color-accent: #8338ec;
+            --color-card-bg: #1a1a1a;
+            --font-mono: 'Roboto Mono', monospace;
+            --font-futuristic: 'Orbitron', monospace;
+        }
+        
+        body {
+            font-family: var(--font-mono);
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 100%);
+            min-height: 100vh;
+            color: var(--color-text);
+            overflow-x: hidden;
+            position: relative;
+        }
+        
+        /* Enhanced Matrix Rain Effect */
+        #matrix-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+            overflow: hidden;
+            opacity: 0.3;
+        }
+        
+        .matrix-column {
+            position: absolute;
+            top: -100%;
+            color: var(--color-primary);
+            font-size: 16px;
+            font-family: var(--font-mono);
+            text-shadow: 0 0 10px rgba(0, 255, 65, 0.8);
+            animation: matrix-fall linear infinite;
+        }
+        
+        @keyframes matrix-fall {
+            0% {
+                transform: translateY(-100%);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(calc(100vh + 100%));
+                opacity: 0;
+            }
+        }
+        
+        /* Confetti Canvas */
+        #confetti-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 9999;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .header {
+            text-align: center;
+            padding: 80px 20px;
+            background: linear-gradient(135deg, rgba(26, 26, 26, 0.9) 0%, rgba(26, 26, 46, 0.9) 100%);
+            border-radius: 20px;
+            margin-bottom: 40px;
+            box-shadow: 
+                0 0 50px rgba(0, 255, 65, 0.2),
+                inset 0 0 50px rgba(0, 255, 65, 0.05);
+            border: 2px solid var(--color-primary);
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+        }
+        
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(0, 255, 65, 0.15) 0%, transparent 70%);
+            animation: pulse 4s ease-in-out infinite;
+        }
+        
+        .header::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 255, 65, 0.1), transparent);
+            animation: scan 3s linear infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { 
+                transform: scale(1); 
+                opacity: 0.5;
+            }
+            50% { 
+                transform: scale(1.2); 
+                opacity: 1;
+            }
+        }
+        
+        @keyframes scan {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+        
+        .header h1 {
+            font-size: 4em;
+            font-family: var(--font-futuristic);
+            color: white;
+            margin-bottom: 15px;
+            position: relative;
+            z-index: 1;
+            letter-spacing: 8px;
+            text-shadow: 
+                0 0 20px var(--color-primary),
+                0 0 40px var(--color-primary),
+                0 0 60px rgba(0, 255, 65, 0.5);
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+        
+        @keyframes glow {
+            from {
+                text-shadow: 
+                    0 0 20px var(--color-primary),
+                    0 0 40px var(--color-primary),
+                    0 0 60px rgba(0, 255, 65, 0.5);
+            }
+            to {
+                text-shadow: 
+                    0 0 30px var(--color-primary),
+                    0 0 60px var(--color-primary),
+                    0 0 90px rgba(0, 255, 65, 0.8);
+            }
+        }
+        
+        .header p {
+            font-size: 1.4em;
+            color: #aaa;
+            position: relative;
+            z-index: 1;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+        }
+        
+        .search-section {
+            background: rgba(26, 26, 26, 0.8);
+            padding: 50px;
+            border-radius: 15px;
+            margin-bottom: 40px;
+            box-shadow: 0 0 40px rgba(0, 255, 65, 0.15);
+            border: 2px solid var(--color-primary);
+            backdrop-filter: blur(10px);
+        }
+        
+        .input-group {
+            display: flex;
+            gap: 20px;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        
+        input {
+            flex: 1;
+            padding: 20px 30px;
+            font-size: 1.1em;
+            font-family: var(--font-mono);
+            background: rgba(10, 10, 10, 0.8);
+            border: 2px solid var(--color-primary);
+            border-radius: 10px;
+            color: var(--color-text);
+            transition: all 0.3s ease;
+        }
+        
+        input:focus {
+            outline: none;
+            border-color: var(--color-secondary);
+            box-shadow: 
+                0 0 20px rgba(255, 0, 110, 0.5),
+                inset 0 0 20px rgba(255, 0, 110, 0.1);
+            transform: scale(1.02);
+        }
+        
+        button {
+            padding: 20px 50px;
+            font-size: 1.1em;
+            font-weight: bold;
+            font-family: var(--font-futuristic);
+            text-transform: uppercase;
+            background: linear-gradient(135deg, var(--color-secondary) 0%, var(--color-accent) 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 20px rgba(255, 0, 110, 0.5);
+            letter-spacing: 2px;
+        }
+        
+        button:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 0 30px rgba(255, 0, 110, 0.8);
+        }
+        
+        button:active {
+            transform: translateY(-1px) scale(1.02);
+        }
+        
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 80px;
+            display: none;
+            color: var(--color-secondary);
+        }
+        
+        .loading-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 30px;
+        }
+        
+        .spinner-container {
+            position: relative;
+            width: 100px;
+            height: 100px;
+        }
+        
+        .spinner {
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            border: 4px solid rgba(0, 255, 65, 0.1);
+            border-top: 4px solid var(--color-primary);
+            border-right: 4px solid var(--color-secondary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        .spinner-inner {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            width: 60px;
+            height: 60px;
+            border: 4px solid rgba(0, 255, 65, 0.1);
+            border-top: 4px solid var(--color-accent);
+            border-radius: 50%;
+            animation: spin 0.7s linear infinite reverse;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .loading-text {
+            font-size: 1.3em;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            animation: pulse-text 1.5s ease-in-out infinite;
+        }
+        
+        @keyframes pulse-text {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
+        }
+        
+        .results {
+            display: none;
+            animation: fadeIn 0.5s ease-in;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .stats-overview {
+            background: linear-gradient(135deg, rgba(26, 26, 26, 0.9) 0%, rgba(26, 26, 46, 0.9) 100%);
+            padding: 60px;
+            border-radius: 20px;
+            text-align: center;
+            margin-bottom: 40px;
+            box-shadow: 
+                0 0 50px rgba(0, 255, 65, 0.2),
+                inset 0 0 50px rgba(0, 255, 65, 0.05);
+            border: 2px solid var(--color-primary);
+            backdrop-filter: blur(10px);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .big-number {
+            font-size: 6em;
+            font-family: var(--font-futuristic);
+            font-weight: 900;
+            margin-bottom: 15px;
+            color: var(--color-primary);
+            text-shadow: 
+                0 0 20px rgba(0, 255, 65, 0.8),
+                0 0 40px rgba(0, 255, 65, 0.6),
+                0 0 60px rgba(0, 255, 65, 0.4);
+            background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .big-number::after {
+            content: " LoC";
+            font-size: 0.25em;
+            vertical-align: super;
+            -webkit-text-fill-color: var(--color-text);
+        }
+        
+        .milestone-section {
+            margin: 40px 0;
+        }
+        
+        .milestone-badge {
+            display: inline-block;
+            padding: 25px 60px;
+            border-radius: 15px;
+            font-size: 2.5em;
+            font-family: var(--font-futuristic);
+            font-weight: bold;
+            margin: 30px 0;
+            animation: badgeAppear 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            box-shadow: 
+                0 10px 30px rgba(0, 0, 0, 0.5),
+                0 0 30px currentColor;
+            border: 3px solid;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .milestone-badge::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            animation: shine 3s infinite;
+        }
+        
+        @keyframes shine {
+            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+        }
+        
+        @keyframes badgeAppear {
+            0% { 
+                transform: scale(0) rotate(-180deg);
+                opacity: 0;
+            }
+            60% {
+                transform: scale(1.2) rotate(10deg);
+            }
+            100% { 
+                transform: scale(1) rotate(0deg);
+                opacity: 1;
+            }
+        }
+        
+        .milestone-subtitle {
+            font-size: 1.5em;
+            color: #ccc;
+            margin: 15px 0;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        
+        .milestone-fact {
+            font-size: 1.2em;
+            color: var(--color-secondary);
+            font-style: italic;
+            padding: 20px;
+            border-left: 5px solid var(--color-secondary);
+            margin-top: 25px;
+            background: rgba(255, 0, 110, 0.1);
+            border-radius: 5px;
+        }
+        
+        /* Progress Bar */
+        .progress-section {
+            margin: 40px 0;
+            padding: 30px;
+            background: rgba(10, 10, 10, 0.5);
+            border-radius: 15px;
+            border: 2px solid var(--color-primary);
+        }
+        
+        .progress-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            font-size: 1.1em;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        
+        .progress-bar-container {
+            width: 100%;
+            height: 30px;
+            background: rgba(0, 255, 65, 0.1);
+            border-radius: 15px;
+            overflow: hidden;
+            border: 2px solid var(--color-primary);
+            position: relative;
+        }
+        
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--color-primary) 0%, var(--color-secondary) 100%);
+            border-radius: 15px;
+            transition: width 1s ease-out;
+            box-shadow: 
+                0 0 20px rgba(0, 255, 65, 0.6),
+                inset 0 0 20px rgba(255, 255, 255, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .progress-bar::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            animation: progress-shine 2s infinite;
+        }
+        
+        @keyframes progress-shine {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+        
+        .progress-text {
+            margin-top: 10px;
+            font-size: 0.9em;
+            color: #aaa;
+        }
+        
+        /* Language Distribution */
+        .language-section {
+            background: linear-gradient(135deg, rgba(26, 26, 26, 0.9) 0%, rgba(26, 26, 46, 0.9) 100%);
+            padding: 40px;
+            border-radius: 20px;
+            margin-bottom: 40px;
+            box-shadow: 0 0 40px rgba(0, 255, 65, 0.15);
+            border: 2px solid var(--color-primary);
+            backdrop-filter: blur(10px);
+        }
+        
+        .language-chart {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 30px;
+        }
+        
+        .language-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px;
+            background: rgba(10, 10, 10, 0.5);
+            border-radius: 10px;
+            border: 1px solid rgba(0, 255, 65, 0.3);
+            transition: all 0.3s ease;
+        }
+        
+        .language-item:hover {
+            transform: translateX(10px);
+            border-color: var(--color-primary);
+            box-shadow: 0 0 20px rgba(0, 255, 65, 0.3);
+        }
+        
+        .language-name {
+            min-width: 150px;
+            font-weight: bold;
+            color: var(--color-primary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .language-bar-container {
+            flex: 1;
+            height: 25px;
+            background: rgba(0, 255, 65, 0.1);
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid rgba(0, 255, 65, 0.3);
+            position: relative;
+        }
+        
+        .language-bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--color-primary) 0%, var(--color-accent) 100%);
+            border-radius: 12px;
+            transition: width 1s ease-out;
+            box-shadow: 0 0 10px rgba(0, 255, 65, 0.5);
+        }
+        
+        .language-percentage {
+            min-width: 80px;
+            text-align: right;
+            font-weight: bold;
+            color: var(--color-text);
+        }
+        
+        .funny-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin: 40px 0;
+        }
+        
+        .stat-card {
+            background: linear-gradient(135deg, rgba(26, 26, 26, 0.9) 0%, rgba(10, 10, 10, 0.9) 100%);
+            padding: 35px;
+            border-radius: 15px;
+            text-align: center;
+            transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            border: 2px solid var(--color-primary);
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+        }
+        
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(0, 255, 65, 0.1) 0%, transparent 70%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-10px) scale(1.05);
+            box-shadow: 
+                0 15px 40px rgba(0, 255, 65, 0.4),
+                0 0 30px rgba(0, 255, 65, 0.2);
+            border-color: var(--color-secondary);
+        }
+        
+        .stat-card:hover::before {
+            opacity: 1;
+        }
+        
+        .stat-icon {
+            font-size: 4em;
+            margin-bottom: 20px;
+            display: block;
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        .stat-value {
+            font-size: 2.2em;
+            font-family: var(--font-futuristic);
+            font-weight: bold;
+            color: var(--color-primary);
+            margin: 15px 0;
+            text-shadow: 0 0 15px rgba(0, 255, 65, 0.6);
+        }
+        
+        .stat-label {
+            color: #aaa;
+            font-size: 1em;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        
+        .repos-section {
+            margin-top: 50px;
+            border-top: 3px dashed rgba(0, 255, 65, 0.3);
+            padding-top: 40px;
+        }
+        
+        .repos-controls {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+        
+        .search-box, .sort-select {
+            padding: 12px 20px;
+            font-family: var(--font-mono);
+            background: rgba(10, 10, 10, 0.8);
+            border: 2px solid var(--color-primary);
+            border-radius: 8px;
+            color: var(--color-text);
+            font-size: 1em;
+        }
+        
+        .search-box {
+            flex: 1;
+            min-width: 200px;
+        }
+        
+        .sort-select {
+            min-width: 150px;
+        }
+        
+        .section-title {
+            font-size: 2.5em;
+            font-family: var(--font-futuristic);
+            margin-bottom: 30px;
+            color: var(--color-primary);
+            text-align: center;
+            text-shadow: 0 0 20px rgba(0, 255, 65, 0.6);
+            text-transform: uppercase;
+            letter-spacing: 5px;
+        }
+        
+        .repo-card {
+            background: linear-gradient(135deg, rgba(26, 26, 26, 0.9) 0%, rgba(10, 10, 10, 0.9) 100%);
+            padding: 30px;
+            border-radius: 15px;
+            margin-bottom: 25px;
+            border: 2px solid var(--color-primary);
+            transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            backdrop-filter: blur(10px);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .repo-card::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 5px;
+            height: 100%;
+            background: linear-gradient(180deg, var(--color-primary) 0%, var(--color-secondary) 100%);
+            transform: scaleY(0);
+            transition: transform 0.3s ease;
+        }
+        
+        .repo-card:hover {
+            transform: translateX(15px) scale(1.02);
+            box-shadow: 
+                0 15px 40px rgba(0, 255, 65, 0.3),
+                0 0 30px rgba(0, 255, 65, 0.1);
+            border-color: var(--color-secondary);
+        }
+        
+        .repo-card:hover::before {
+            transform: scaleY(1);
+        }
+        
+        .repo-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        
+        .repo-name {
+            font-size: 1.6em;
+            font-family: var(--font-futuristic);
+            color: var(--color-primary);
+            text-decoration: none;
+            font-weight: bold;
+            text-shadow: 0 0 10px rgba(0, 255, 65, 0.5);
+            transition: all 0.3s ease;
+        }
+        
+        .repo-name:hover {
+            text-decoration: underline;
+            color: var(--color-secondary);
+            text-shadow: 0 0 15px rgba(255, 0, 110, 0.8);
+        }
+        
+        .repo-lines {
+            font-size: 1.8em;
+            font-family: var(--font-futuristic);
+            font-weight: bold;
+            color: var(--color-primary);
+            text-shadow: 0 0 15px rgba(0, 255, 65, 0.6);
+        }
+        
+        .languages {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-top: 15px;
+        }
+        
+        .language-tag {
+            background: rgba(0, 255, 65, 0.1);
+            padding: 8px 18px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            color: var(--color-primary);
+            border: 1px solid var(--color-primary);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .language-tag:hover {
+            background: rgba(0, 255, 65, 0.2);
+            transform: scale(1.1);
+            box-shadow: 0 0 15px rgba(0, 255, 65, 0.4);
+        }
+        
+        .language-percentage-bar {
+            margin-top: 5px;
+            height: 3px;
+            background: var(--color-primary);
+            border-radius: 2px;
+            box-shadow: 0 0 5px rgba(0, 255, 65, 0.6);
+        }
+        
+        .error {
+            background: linear-gradient(135deg, #da3633 0%, #ff0000 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            text-align: center;
+            margin: 20px 0;
+            display: none;
+            border: 2px solid #ff0000;
+            box-shadow: 0 0 30px rgba(255, 0, 0, 0.6);
+            font-size: 1.1em;
+            animation: shake 0.5s;
+        }
+        
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+        
+        .stars {
+            color: #f1c40f;
+            margin-left: 15px;
+            text-shadow: 0 0 10px rgba(241, 196, 15, 0.8);
+            font-size: 1.2em;
+        }
+        
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2.5em;
+            }
+            
+            .big-number {
+                font-size: 3.5em;
+            }
+            
+            .input-group {
+                flex-direction: column;
+            }
+            
+            .repos-controls {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <canvas id="confetti-canvas"></canvas>
+    <div id="matrix-bg"></div>
+    <div class="container">
+        <div class="header">
+            <h1>&lt;GITHUB_CODE_ANALYZER&gt;</h1>
+            <p>Decode Your Digital DNA...</p>
+        </div>
+        
+        <div class="search-section">
+            <div class="input-group">
+                <input type="text" id="username" placeholder="> Enter GitHub username..." />
+                <button onclick="analyze()">⚡ ANALYZE ⚡</button>
+            </div>
+        </div>
+        
+        <div class="error" id="error"></div>
+        
+        <div class="loading" id="loading">
+            <div class="loading-content">
+                <div class="spinner-container">
+                    <div class="spinner"></div>
+                    <div class="spinner-inner"></div>
+                </div>
+                <p class="loading-text">SCANNING THE DIGITAL ABYSS...</p>
+                <p style="font-size: 0.9em; opacity: 0.7;">This might take a moment</p>
+            </div>
+        </div>
+        
+        <div class="results" id="results">
+            <div class="stats-overview">
+                <div class="big-number" id="totalLines">0</div>
+                <div style="font-size: 1.3em; color: #aaa; text-transform: uppercase; letter-spacing: 4px; margin-bottom: 30px;">LINES OF CODE</div>
+                
+                <div class="milestone-section">
+                    <div class="milestone-badge" id="milestoneBadge"></div>
+                    <div class="milestone-subtitle" id="milestoneSubtitle"></div>
+                    <div class="milestone-fact" id="milestoneFact"></div>
+                </div>
+                
+                <div class="progress-section" id="progressSection" style="display: none;">
+                    <div class="progress-label">
+                        <span>Progress to Next Milestone</span>
+                        <span id="progressPercentage">0%</span>
+                    </div>
+                    <div class="progress-bar-container">
+                        <div class="progress-bar" id="progressBar" style="width: 0%;"></div>
+                    </div>
+                    <div class="progress-text" id="progressText"></div>
+                </div>
+            </div>
+            
+            <div class="language-section" id="languageSection" style="display: none;">
+                <h2 class="section-title">> Language Distribution</h2>
+                <div class="language-chart" id="languageChart"></div>
+            </div>
+            
+            <div class="funny-stats" id="funnyStats"></div>
+            
+            <div class="repos-section">
+                <h2 class="section-title">> Repository Breakdown</h2>
+                <div class="repos-controls">
+                    <input type="text" class="search-box" id="repoSearch" placeholder="🔍 Search repositories..." />
+                    <select class="sort-select" id="repoSort">
+                        <option value="lines-desc">Sort by: Lines (High to Low)</option>
+                        <option value="lines-asc">Sort by: Lines (Low to High)</option>
+                        <option value="name-asc">Sort by: Name (A-Z)</option>
+                        <option value="name-desc">Sort by: Name (Z-A)</option>
+                        <option value="stars-desc">Sort by: Stars (High to Low)</option>
+                    </select>
+                </div>
+                <div id="reposList"></div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        let allRepos = [];
+        let currentDisplayedRepos = [];
+        
+        // Enhanced Matrix Rain Effect
+        function createMatrixRain() {
+            const matrixBg = document.getElementById('matrix-bg');
+            matrixBg.innerHTML = '';
+            const chars = '01アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲンABCDEFGHIJKLMNOPQRSTUVWXYZ';
+            const columns = Math.floor(window.innerWidth / 18);
+            
+            for (let i = 0; i < columns; i++) {
+                const column = document.createElement('div');
+                column.className = 'matrix-column';
+                column.style.left = (i * 18) + 'px';
+                column.style.animationDuration = (Math.random() * 4 + 3) + 's';
+                column.style.animationDelay = Math.random() * 3 + 's';
+                
+                let text = '';
+                const length = Math.floor(Math.random() * 25) + 15;
+                for (let j = 0; j < length; j++) {
+                    text += chars[Math.floor(Math.random() * chars.length)] + '<br>';
+                }
+                column.innerHTML = text;
+                
+                matrixBg.appendChild(column);
+            }
+        }
+        
+        // Confetti Animation
+        function createConfetti() {
+            const canvas = document.getElementById('confetti-canvas');
+            const ctx = canvas.getContext('2d');
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            
+            const confetti = [];
+            const colors = ['#00ff41', '#ff006e', '#8338ec', '#ffbe0b', '#fb5607'];
+            
+            for (let i = 0; i < 150; i++) {
+                confetti.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height - canvas.height,
+                    r: Math.random() * 4 + 2,
+                    d: Math.random() * 5 + 2,
+                    color: colors[Math.floor(Math.random() * colors.length)],
+                    tilt: Math.random() * 10 - 5,
+                    tiltAngleIncrement: Math.random() * 0.1 + 0.05,
+                    tiltAngle: 0
+                });
+            }
+            
+            function draw() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                
+                confetti.forEach((c, i) => {
+                    ctx.beginPath();
+                    ctx.lineWidth = c.r;
+                    ctx.strokeStyle = c.color;
+                    ctx.moveTo(c.x + c.tilt + c.r, c.y);
+                    ctx.lineTo(c.x + c.tilt, c.y + c.tilt + c.r);
+                    ctx.stroke();
+                    
+                    c.tiltAngle += c.tiltAngleIncrement;
+                    c.y += c.d;
+                    c.tilt = Math.sin(c.tiltAngle) * 15;
+                    
+                    if (c.y > canvas.height) {
+                        confetti[i] = {
+                            x: Math.random() * canvas.width,
+                            y: Math.random() * canvas.height - canvas.height,
+                            r: c.r,
+                            d: c.d,
+                            color: c.color,
+                            tilt: Math.random() * 10 - 5,
+                            tiltAngleIncrement: c.tiltAngleIncrement,
+                            tiltAngle: 0
+                        };
+                    }
+                });
+                
+                requestAnimationFrame(draw);
+            }
+            
+            draw();
+            
+            setTimeout(() => {
+                canvas.style.opacity = '0';
+                setTimeout(() => {
+                    canvas.style.display = 'none';
+                }, 1000);
+            }, 3000);
+        }
+        
+        // Animated Counter
+        function animateCounter(element, start, end, duration) {
+            const range = end - start;
+            const increment = range / (duration / 16);
+            let current = start;
+            
+            const timer = setInterval(() => {
+                current += increment;
+                if ((increment > 0 && current >= end) || (increment < 0 && current <= end)) {
+                    current = end;
+                    clearInterval(timer);
+                }
+                element.textContent = Math.floor(current).toLocaleString();
+            }, 16);
+        }
+        
+        // Initialize
+        createMatrixRain();
+        
+        let resizeTimeout;
+        window.addEventListener('resize', function() {
+            clearTimeout(resizeTimeout);
+            resizeTimeout = setTimeout(() => {
+                createMatrixRain();
+                const canvas = document.getElementById('confetti-canvas');
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+            }, 250);
+        });
+        
+        document.getElementById('username').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') analyze();
+        });
+        
+        // Repo search and sort
+        document.getElementById('repoSearch').addEventListener('input', function(e) {
+            filterAndSortRepos();
+        });
+        
+        document.getElementById('repoSort').addEventListener('change', function(e) {
+            filterAndSortRepos();
+        });
+        
+        function filterAndSortRepos() {
+            const searchTerm = document.getElementById('repoSearch').value.toLowerCase();
+            const sortOption = document.getElementById('repoSort').value;
+            
+            let filtered = allRepos.filter(repo => 
+                repo.name.toLowerCase().includes(searchTerm)
+            );
+            
+            const [sortBy, order] = sortOption.split('-');
+            filtered.sort((a, b) => {
+                let comparison = 0;
+                if (sortBy === 'lines') {
+                    comparison = a.lines - b.lines;
+                } else if (sortBy === 'name') {
+                    comparison = a.name.localeCompare(b.name);
+                } else if (sortBy === 'stars') {
+                    comparison = a.stars - b.stars;
+                }
+                return order === 'desc' ? -comparison : comparison;
+            });
+            
+            currentDisplayedRepos = filtered;
+            displayRepos(filtered);
+        }
+        
+        function displayRepos(repos) {
+            const reposList = document.getElementById('reposList');
+            reposList.innerHTML = repos.map(repo => {
+                const totalRepoLines = Object.values(repo.languages).reduce((a, b) => a + b, 0);
+                return `
+                    <div class="repo-card">
+                        <div class="repo-header">
+                            <a href="${repo.url}" target="_blank" class="repo-name">
+                                ${repo.name}
+                                ${repo.stars > 0 ? `<span class="stars">⭐ ${repo.stars}</span>` : ''}
+                            </a>
+                            <div class="repo-lines">${repo.lines.toLocaleString()} lines</div>
+                        </div>
+                        <div class="languages">
+                            ${Object.entries(repo.languages)
+                                .sort((a, b) => b[1] - a[1])
+                                .map(([lang, size]) => {
+                                    const percentage = ((size / totalRepoLines) * 100).toFixed(1);
+                                    return `
+                                        <div style="display: flex; flex-direction: column; align-items: center;">
+                                            <span class="language-tag">
+                                                ${lang} <span style="opacity: 0.7;">(${percentage}%)</span>
+                                            </span>
+                                            <div class="language-percentage-bar" style="width: ${percentage}%;"></div>
+                                        </div>
+                                    `;
+                                }).join('')}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+        
+        async function analyze() {
+            const username = document.getElementById('username').value.trim();
+            
+            if (!username) {
+                return;
+            }
+            
+            document.getElementById('error').style.display = 'none';
+            document.getElementById('results').style.display = 'none';
+            document.getElementById('loading').style.display = 'block';
+            
+            try {
+                const response = await fetch('/analyze', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username })
+                });
+                
+                const data = await response.json();
+                
+                if (!response.ok) {
+                    throw new Error(data.error || 'An error occurred');
+                }
+                
+                displayResults(data);
+                createConfetti();
+            } catch (error) {
+                document.getElementById('error').textContent = error.message;
+                document.getElementById('error').style.display = 'block';
+            } finally {
+                document.getElementById('loading').style.display = 'none';
+            }
+        }
+        
+        function displayResults(data) {
+            // Animated counter for total lines
+            const totalLinesEl = document.getElementById('totalLines');
+            animateCounter(totalLinesEl, 0, data.total_lines, 2000);
+            
+            // Milestone
+            const badge = document.getElementById('milestoneBadge');
+            badge.textContent = data.milestone.title;
+            badge.style.background = data.milestone.color;
+            badge.style.color = 'white';
+            badge.style.borderColor = data.milestone.color;
+            
+            document.getElementById('milestoneSubtitle').textContent = data.milestone.subtitle;
+            document.getElementById('milestoneFact').textContent = data.milestone.fact;
+            
+            // Progress to next milestone
+            if (data.milestone_progress) {
+                const progressSection = document.getElementById('progressSection');
+                progressSection.style.display = 'block';
+                
+                setTimeout(() => {
+                    const progressBar = document.getElementById('progressBar');
+                    progressBar.style.width = data.milestone_progress.percentage + '%';
+                    
+                    document.getElementById('progressPercentage').textContent = 
+                        data.milestone_progress.percentage + '%';
+                    document.getElementById('progressText').textContent = 
+                        `${data.milestone_progress.remaining.toLocaleString()} lines until next milestone (${data.milestone_progress.next.toLocaleString()} lines)`;
+                }, 100);
+            }
+            
+            // Language distribution
+            if (data.language_distribution && data.language_distribution.length > 0) {
+                const languageSection = document.getElementById('languageSection');
+                languageSection.style.display = 'block';
+                
+                const languageChart = document.getElementById('languageChart');
+                languageChart.innerHTML = data.language_distribution.map(lang => `
+                    <div class="language-item">
+                        <div class="language-name">${lang.name}</div>
+                        <div class="language-bar-container">
+                            <div class="language-bar" style="width: 0%;" data-width="${lang.percentage}%"></div>
+                        </div>
+                        <div class="language-percentage">${lang.percentage}%</div>
+                    </div>
+                `).join('');
+                
+                // Animate language bars
+                setTimeout(() => {
+                    document.querySelectorAll('.language-bar').forEach(bar => {
+                        bar.style.width = bar.getAttribute('data-width');
+                    });
+                }, 500);
+            }
+            
+            // Funny stats
+            const funnyStats = document.getElementById('funnyStats');
+            funnyStats.innerHTML = data.funny_stats.map((stat, index) => `
+                <div class="stat-card" style="animation-delay: ${index * 0.1}s;">
+                    <div class="stat-icon">${stat.icon}</div>
+                    <div class="stat-value">${stat.value}</div>
+                    <div class="stat-label">${stat.label}</div>
+                </div>
+            `).join('');
+            
+            // Repos
+            allRepos = data.repos;
+            currentDisplayedRepos = data.repos;
+            displayRepos(data.repos);
+            
+            document.getElementById('results').style.display = 'block';
+            
+            // Smooth scroll to results
+            setTimeout(() => {
+                document.getElementById('results').scrollIntoView({ 
+                    behavior: 'smooth', 
+                    block: 'start' 
+                });
+            }, 100);
+        }
+    </script>
+</body>
+</html>
